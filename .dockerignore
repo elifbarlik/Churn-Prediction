@@ -1,0 +1,11 @@
+# Gereksiz dosyalar
+__pycache__/
+*.pyc
+mlruns/
+*.ipynb_checkpoints
+
+# IDE ve sistem
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+# Python derlemeleri
+__pycache__/
+*.pyc
+
+# MLflow deney klasörü
+mlruns/
+
+# Jupyter Notebook geçici dosyaları
+*.ipynb_checkpoints
+
+# Sistem dosyaları
+.DS_Store
+Thumbs.db
+
+# IDE (VSCode, PyCharm vs) ayarları
+.vscode/
+.idea/
