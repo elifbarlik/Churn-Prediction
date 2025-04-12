@@ -1,8 +1,6 @@
 import streamlit as st
 import requests
 
-API_URL = "https://grumpy-swans-work.loca.lt"
-
 st.title("📉 Churn Prediction Uygulaması")
 
 st.markdown("Lütfen müşteri bilgilerini girin:")
@@ -48,7 +46,7 @@ if st.button("🔍 Tahmin Et"):
     }
 
     try:
-        response = requests.post(API_URL+"/predict", json=veri)
+        response = requests.post('https://churn-prediction-5f8q.onrender.com/predict', json=veri)
         result = response.json()
         st.success(f"📌 Churn Tahmini: {'Evet (1)' if result['churn']==1 else 'Hayır (0)'}")
         st.info(f"🎯 Churn Olasılığı: %{result['probability']*100:.2f}")
