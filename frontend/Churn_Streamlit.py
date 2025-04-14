@@ -9,7 +9,6 @@ features_map = {
     "SeniorCitizen": {"Hayır": 0, "Evet": 1},
     "Partner": {"Hayır": 0, "Evet": 1},
     "Dependents": {"Hayır": 0, "Evet": 1},
-    "PhoneService": {"Hayır": 0, "Evet": 1},
     "MultipleLines": {"Hayır": 0, "Evet": 1},
     "InternetService": {"Yok": 0, "DSL": 1, "Fiber Optik": 2},
     "OnlineSecurity": {"Hayır": 0, "Evet": 1},
@@ -37,8 +36,6 @@ for key, label_options in features_map.items():
 
 # Sayısal girişler
 user_inputs["MonthlyCharges"] = st.number_input("Aylık ödeme")
-user_inputs["TotalCharges"] = st.number_input("Toplam ödeme")
-user_inputs["tenure"] = st.slider("Müşteri süresi (ay)", 0, 72, 12)
 
 if 'gecmis' not in st.session_state:
     st.session_state.gecmis=[]
@@ -47,7 +44,7 @@ if 'gecmis' not in st.session_state:
 if st.button("🔍 Tahmin Et"):
     veri = user_inputs
     try:
-        response = requests.post('https://churn-prediction-5f8q.onrender.com/predict', json=veri)
+        response = requests.post('https://churn-prediction-5f8q.onrender.com/predict', json={'data':veri})
         result = response.json()
         st.success(f"📌 Churn Tahmini: {'Evet (1)' if result['churn']==1 else 'Hayır (0)'}")
         st.info(f"🎯 Churn Olasılığı: %{result['probability']*100:.2f}")
@@ -65,7 +62,7 @@ if st.session_state.gecmis:
     for i, log in enumerate(reversed(st.session_state.gecmis), start=1):
         st.write(f"Churn: {log['Churn']}, Olasilik: {log['Probability']}")
         st.json(log['Data'])
-        
+
         
 
 
