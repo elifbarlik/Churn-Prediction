@@ -4,10 +4,17 @@ import joblib
 import pandas as pd
 from sklearn.feature_selection import RFE
 from sklearn.preprocessing import MinMaxScaler
+import os
 
-model = joblib.load('model.pkl')
-scaler = joblib.load("scaler.pkl")
-selected_features = joblib.load("selected_features.pkl")
+model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
+model = joblib.load(model_path)
+
+scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
+scaler = joblib.load(scaler_path)
+
+selected_path = os.path.join(os.path.dirname(__file__), "selected_features.pkl")
+selected_features = joblib.load(selected_path)
+
 
 app = FastAPI()
 
