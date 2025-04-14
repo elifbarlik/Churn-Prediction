@@ -3,22 +3,24 @@ import requests
 
 st.title("📉 Churn Prediction Uygulaması")
 
-st.markdown("Lütfen müşteri bilgilerini girin:")
+st.markdown("Bu uygulama, müşteri verilerine göre abonelik iptali riskini tahmin eder.")
 
 features_map = {
-    "Evli misiniz?": {"Hayır": 0, "Evet": 1},
-    "Telefon hizmeti": {"Hayır": 0, "Evet": 1},
-    "Birden fazla hat": {"Hayır": 0, "Evet": 1},
-    "İnternet hizmeti": {"Yok": 0, "DSL": 1, "Fiber Optik": 2},
-    "Çevrimiçi güvenlik": {"Hayır": 0, "Evet": 1},
-    "Çevrimiçi yedekleme": {"Hayır": 0, "Evet": 1},
-    "Cihaz koruma": {"Hayır": 0, "Evet": 1},
-    "Teknik destek": {"Hayır": 0, "Evet": 1},
-    "TV yayını": {"Hayır": 0, "Evet": 1},
-    "Film yayını": {"Hayır": 0, "Evet": 1},
-    "Sözleşme türü": {"Aylık": 0, "1 Yıllık": 1, "2 Yıllık": 2},
-    "Kağıtsız fatura": {"Hayır": 0, "Evet": 1},
-    "Ödeme yöntemi": {
+    "SeniorCitizen": {"Hayır": 0, "Evet": 1},
+    "Partner": {"Hayır": 0, "Evet": 1},
+    "Dependents": {"Hayır": 0, "Evet": 1},
+    "PhoneService": {"Hayır": 0, "Evet": 1},
+    "MultipleLines": {"Hayır": 0, "Evet": 1},
+    "InternetService": {"Yok": 0, "DSL": 1, "Fiber Optik": 2},
+    "OnlineSecurity": {"Hayır": 0, "Evet": 1},
+    "OnlineBackup": {"Hayır": 0, "Evet": 1},
+    "DeviceProtection": {"Hayır": 0, "Evet": 1},
+    "TechSupport": {"Hayır": 0, "Evet": 1},
+    "StreamingTV": {"Hayır": 0, "Evet": 1},
+    "StreamingMovies": {"Hayır": 0, "Evet": 1},
+    "Contract": {"Aylık": 0, "1 Yıllık": 1, "2 Yıllık": 2},
+    "PaperlessBilling": {"Hayır": 0, "Evet": 1},
+    "PaymentMethod": {
         "Elektronik çek": 0,
         "Otomatik banka ödemesi": 1,
         "Kredi kartı": 2,
@@ -26,14 +28,17 @@ features_map = {
     }
 }
 
-user_inputs = {}
 
-for label, options in features_map.items():
-    selected_label = st.radio(label, options=list(options.keys()))
-    user_inputs[label] = options[selected_label]
+user_inputs = {}
+for key, label_options in features_map.items():
+    label = st.radio(f"{key} seçin", options=list(label_options.keys()))
+    user_inputs[key] = label_options[label]
+
 
 # Sayısal girişler
-user_inputs["Toplam ödeme"] = st.number_input("Toplam ödeme", min_value=0.0)
+user_inputs["MonthlyCharges"] = st.number_input("Aylık ödeme")
+user_inputs["TotalCharges"] = st.number_input("Toplam ödeme")
+user_inputs["tenure"] = st.slider("Müşteri süresi (ay)", 0, 72, 12)
 
 if 'gecmis' not in st.session_state:
     st.session_state.gecmis=[]
@@ -59,7 +64,7 @@ if st.session_state.gecmis:
     st.subheader("Tahmin Gecmisi")
     for i, log in enumerate(reversed(st.session_state.gecmis), start=1):
         st.write(f"Churn: {log['Churn']}, Olasilik: {log['Probability']}")
-        st.json(log['Girdi'])
+        st.json(log['Data'])
         
         
 

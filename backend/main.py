@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.feature_selection import RFE
 from sklearn.preprocessing import MinMaxScaler
 import os
+from typing import Dict, Any
 
 model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
 model = joblib.load(model_path)
@@ -19,26 +20,12 @@ selected_features = joblib.load(selected_path)
 app = FastAPI()
 
 class CustomerData(BaseModel):
-    SeniorCitizen: int
-    Partner: int
-    Dependents: int
-    MultipleLines: int
-    InternetService: int
-    OnlineSecurity: int
-    OnlineBackup: int
-    DeviceProtection: int
-    TechSupport: int
-    StreamingTV: int
-    StreamingMovies: int
-    Contract: int
-    PaperlessBilling: int
-    PaymentMethod: int
-    MonthlyCharges: float
+    data: Dict[str, Any]
 
     
 @app.post("/predict")
 def predict(data: CustomerData):
-    df=pd.DataFrame([data.dict()])
+    df=pd.DataFrame([data.data])
     df_selected = df[selected_features]
     df_scaled = scaler.transform(df_selected)
     prediction = model.predict(df_scaled)[0]
